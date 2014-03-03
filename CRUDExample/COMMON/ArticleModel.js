@@ -2,8 +2,8 @@ CRUDExample.ArticleModel = CLASS({
 
 	statics : function(cls) {'use strict';
 
-		// valid datas
-		cls.validDatas = {
+		// valid data set
+		cls.validDataSet = {
 			title : {
 				notEmpty : true,
 				size : {
@@ -29,10 +29,10 @@ CRUDExample.ArticleModel = CLASS({
 			name : 'Article',
 			config : {
 				create : {
-					valid : VALID(cls.validDatas)
+					valid : VALID(cls.validDataSet)
 				},
 				update : {
-					valid : VALID(cls.validDatas)
+					valid : VALID(cls.validDataSet)
 				}
 			}
 		};
