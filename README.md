@@ -1,4 +1,4 @@
-UPPERSITE-EXAMPLES
+UPPERSITE EXAMPLES
 ==================
 
 UPPERSITE Examples Pack

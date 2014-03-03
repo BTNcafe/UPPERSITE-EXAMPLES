@@ -1,0 +1,1 @@
+RUN(function(){"use strict";var t=function(t){document.write('<script src="/UPPERSITE/BROWSER_FIX/ANDROID/'+t+'.js"></script>')};t("INFO")});
