@@ -18,11 +18,37 @@
 				<input type="submit">
 			</p>
 		</form>
-		<table border='1px'>
+
+		<!-- Modal -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							&times;
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+					</div>
+					<div class="modal-body"></div>
+					<div class="modal-footer">
+						<button id="close" type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:close();">
+							닫기
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<table border='0px' class='table table-striped'>
 			<thead>
 				<th>제목</th>
 				<th>내용</th>
 				<th>작성일자</th>
+				<th>수정</th>
+				<th>삭제</th>
+				<th>댓글내용</th>
+				<th>댓글</th>
+				<th>댓글보기</th>
 			</thead>
 			<tbody>
 
@@ -30,10 +56,27 @@
 		</table>
 		<script src="/__SCRIPT"></script>
 		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 		<script>
+			var
+			//close
+			close = function() {
+				alert('close');
+			};
 			var
 			// article model
 			articleModel = CRUDExample.ArticleModel();
+
+			var
+			// comment model
+			commentModel = CRUDExample.CommentModel();
 
 			articleModel.findDataSet({
 				sort : {
@@ -44,20 +87,88 @@
 				if (result.hasError === false) {
 
 					EACH(result.savedDataSet, function(data) {
+
+						var
+						// cal
+						cal = CALENDAR(data.createTime);
+
 						$('tbody').append('<tr id=' + data.id + '>');
 						$('#' + data.id).append('<td class=title>' + data.title + '</td>');
 						$('#' + data.id).append('<td class=content>' + data.content + '</td>');
-						$('#' + data.id).append('<td class=time>' + data.createTime + '</td></tr>');
+						$('#' + data.id).append('<td class=time>' + cal.getYear() + '년 ' + cal.getMonth() + '월 ' + cal.getDate() + '일 ' + '</td>');
+						$('#' + data.id).append('<td class=modify><button class="btn btn-primary btn-small" type=submit onClick="javascript:modifyContents()">수정 </button></td>');
+						$('#' + data.id).append('<td class=delete><button class="btn btn-primary btn-small" type=submit onClick="javascript:deleteContents()">삭제 </button></td>');
+						$('#' + data.id).append('<td class=comment_contents> <input type=text id=' + data.id + 'comment /></td>');
+						$('#' + data.id).append('<td class=comment><button class="btn btn-primary btn-small" type=submit onClick="javascript:addComment(\'' + data.id + '\')">댓글달기</button></td>');
+						$('#' + data.id).append('<td class=comment_view> <button class="btn btn-primary btn-small" data-toggle="modal" data-target="#myModal" value="댓글보기" onClick="javascript:commentView(\'' + data.id + '\');">댓글보기</button</td></tr>');
 					});
 				}
 			});
 
+			var
+			//
+			addComment = function(id) {
+				var
+				// data
+				data = {};
+				var
+				//comment
+				comment = $('#' + id + 'comment').val();
+
+				data.articleId = id;
+				data.content = comment;
+
+				commentModel.create(data, function(result) {
+
+					if (result.hasError === false) {
+						alert('Success.');
+					} else {
+						alert(JSON.stringify(result.errors));
+					}
+				});
+
+				return false;
+			};
+
 			articleModel.onNew(function(savedData) {
+
+				var
+				// cal
+				cal = CALENDAR(savedData.createTime);
+
 				$('tbody').before('<tr id=' + savedData.id + '>');
 				$('#' + savedData.id).append('<td class=title>' + savedData.title + '</td>');
 				$('#' + savedData.id).append('<td class=content>' + savedData.content + '</td>');
-				$('#' + savedData.id).append('<td class=time>' + savedData.createTime + '</td></tr>');
+				$('#' + savedData.id).append('<td class=time>' + cal.getYear() + '년 ' + cal.getMonth() + '월 ' + cal.getDate() + '일' + '</td>');
+				$('#' + savedData.id).append('<td class=modify><button class="btn btn-primary btn-small type=submit onClick="javascript:modifyContents()"/>수정</td>');
+				$('#' + savedData.id).append('<td class=comment><button class="btn btn-primary btn-small type=submit onClick="javascript:addComment(\'' + savedData.id + '\')"/>댓글달기</td>');
+				$('#' + savedData.id).append('<td class=comment_contents> <button class="btn btn-primary btn-small" type=text id=' + savedData.id + 'comment ></button></td>');
+				$('#' + savedData.id).append('<td class=comment_view> <button class="btn btn-primary btn-small" data-toggle="modal" data-target="#myModal" value="댓글보기" onClick="javascript:commentView(\'' + savedData.id + '\');">댓글보기</button></td></tr>');
 			});
+
+			var
+			//commentView
+			commentView = function(id) {
+				commentModel.findDataSet({
+					filter : {
+						articleId : id
+					},
+					sort : {
+						createdTime : -1
+					}
+				}, function(result) {
+					if (result.hasError === false) {
+						var
+						//commentContens
+						commentContents;
+						EACH(result.savedDataSet, function(data) {
+							commentContents += JSON.stringify(data);
+						});
+						$('.modal-body').html(commentContents);
+
+					}
+				});
+			};
 
 			$('form').submit(function() {
 

@@ -4,5 +4,6 @@ CRUDExample.MAIN = METHOD({
 
 		// init article model.
 		CRUDExample.ArticleModel();
+		CRUDExample.CommentModel();
 	}
 });
