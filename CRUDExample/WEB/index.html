@@ -18,9 +18,16 @@
 				<input type="submit">
 			</p>
 		</form>
-		<ul>
+		<table border='1px'>
+			<thead>
+				<th>제목</th>
+				<th>내용</th>
+				<th>작성일자</th>
+			</thead>
+			<tbody>
 
-		</ul>
+			</tbody>
+		</table>
 		<script src="/__SCRIPT"></script>
 		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 		<script>
@@ -37,13 +44,19 @@
 				if (result.hasError === false) {
 
 					EACH(result.savedDataSet, function(data) {
-						$('ul').append('<li>' + data.title + '</li>');
+						$('tbody').append('<tr id=' + data.id + '>');
+						$('#' + data.id).append('<td class=title>' + data.title + '</td>');
+						$('#' + data.id).append('<td class=content>' + data.content + '</td>');
+						$('#' + data.id).append('<td class=time>' + data.createTime + '</td></tr>');
 					});
 				}
 			});
 
 			articleModel.onNew(function(savedData) {
-				$('ul').append('<li>' + savedData.title + '</li>');
+				$('tbody').before('<tr id=' + savedData.id + '>');
+				$('#' + savedData.id).append('<td class=title>' + savedData.title + '</td>');
+				$('#' + savedData.id).append('<td class=content>' + savedData.content + '</td>');
+				$('#' + savedData.id).append('<td class=time>' + savedData.createTime + '</td></tr>');
 			});
 
 			$('form').submit(function() {
