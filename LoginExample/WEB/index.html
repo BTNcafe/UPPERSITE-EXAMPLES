@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>UPPERSITE Login</title>
+	</head>
+	<body>
+		<p>
+			UPPERSITE Login Example
+		</p>
+		<form id="join">
+			<h3>Join Form</h3>
+			<p>
+				<input name="username" placeholder="Username.">
+			</p>
+			<p>
+				<input name="password" type="password" placeholder="Password.">
+			</p>
+			<p>
+				<input type="submit">
+			</p>
+		</form>
+		<form id="login">
+			<h3>Login Form</h3>
+			<p>
+				<input name="username" placeholder="Username.">
+			</p>
+			<p>
+				<input name="password" type="password" placeholder="Password.">
+			</p>
+			<p>
+				<input type="submit">
+			</p>
+		</form>
+		<script src="/__SCRIPT"></script>
+		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script>
+			var
+			// user model
+			userModel = LoginExample.UserModel();
+
+			$('#join').submit(function() {
+
+				var
+				// data
+				data = {};
+
+				$.each($(this).serializeArray(), function(i, o) {
+					data[o.name] = o.value;
+				});
+
+				userModel.create(data, function(result) {
+
+					if (result.hasError === false) {
+						alert('Success, Try to Login');
+					} else {
+						alert(JSON.stringify(result.errors));
+					}
+				});
+
+				return false;
+			});
+
+			$('#login').submit(function() {
+
+				var
+				// data
+				data = {};
+
+				$.each($(this).serializeArray(), function(i, o) {
+					data[o.name] = o.value;
+				});
+
+				userModel.login(data, function(result) {
+
+					if (result.hasError === false) {
+						alert('Success!');
+					} else {
+						alert(JSON.stringify(result.errors));
+					}
+				});
+
+				return false;
+			});
+		</script>
+	</body>
+</html>
