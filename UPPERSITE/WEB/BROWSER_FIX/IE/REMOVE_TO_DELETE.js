@@ -1,0 +1,1 @@
+OVERRIDE(REMOVE_TO_DELETE,function(){"use strict";global.REMOVE_TO_DELETE=METHOD({run:function(E,n){var _=function(E){EACH(E,function(n,T){n===TO_DELETE?REMOVE_AT({key:T,data:E}):(CHECK_IS_DATA(n)===!0||CHECK_IS_ARRAY(n)===!0)&&_(n)})};return _(n)}})});

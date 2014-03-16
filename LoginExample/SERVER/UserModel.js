@@ -140,7 +140,7 @@ OVERRIDE(LoginExample.UserModel, function(origin) {
 							savedData.lastLoginTime = new Date();
 							savedData.loginCount += 1;
 
-							db.updateDataSafely(savedData, function(errorMsg, savedData) {
+							db.updateData(savedData, function(errorMsg, savedData) {
 
 								if (errorMsg === undefined) {
 
