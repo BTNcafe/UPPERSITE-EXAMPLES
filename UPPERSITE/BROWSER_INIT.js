@@ -1,1 +1,1 @@
-OBJECT.init();
+RUN(function(){"use strict";OBJECT.init()});
