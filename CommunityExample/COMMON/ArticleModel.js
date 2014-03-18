@@ -20,6 +20,12 @@ CommunityExample.ArticleModel = CLASS({
 				size : {
 					max : 255
 				}
+			},
+			count : {
+				notEmpty : true,
+				size : {
+					max : 255
+				}
 			}
 		};
 	},

@@ -21,10 +21,9 @@ CommunityExample.BoardExample = CLASS({
 			articleModelArray = [];
 
 			if (result.hasError === false) {// 모델에서 데이터 얻는 과정 에러 체
-				console.log(result);
 
 				EACH(result.savedDataSet, function(data) {
-					console.log(data);
+
 					var
 					// 모델에서 뷸러들인 시간데이터를 달력형식에 맞게 변환
 					cal = CALENDAR(data.createTime);
@@ -32,6 +31,7 @@ CommunityExample.BoardExample = CLASS({
 					articleModelArray.push({
 						id : data.id,
 						title : data.title,
+						content : data.content,
 						writer : data.writer,
 						date : cal.getYear() + '년 ' + cal.getMonth() + '월 ' + cal.getDate() + '일 ',
 						count : data.count
@@ -42,6 +42,7 @@ CommunityExample.BoardExample = CLASS({
 					self.articleModel = articleModelArray;
 				});
 
+				// 업데이트 핸들러
 				updateHandler(data.id, function(savedData) {
 					self.apply(function() {
 						self.articleModel = articleModelArray;
@@ -55,6 +56,30 @@ CommunityExample.BoardExample = CLASS({
 			$('#newArticle').modal('show');
 		});
 
+		// 내용 보기
+		self.showContents = function(item, $event) {
+			//console.log(item);
+
+			// 모달 띄우기
+			$('#showContent').modal('show');
+
+			// 내용 입력해주기
+			self.apply(function() {
+				self.content = item.content;
+				self.title = item.title;
+			});
+
+			// 조회수 올리기
+			item.count = item.count + 1;
+			// 이상한 오류나는 부분 어디서 해쉬키가 들어왔지?
+			item.$$hashKey = null;
+			console.log(item);
+			articleModel.update(item, function(result) {
+				console.log(result);
+			});
+
+		};
+
 		// 아티클 모달의 저장버튼
 		$('#formNewArticle').submit(function(event) {
 
@@ -67,8 +92,7 @@ CommunityExample.BoardExample = CLASS({
 			});
 			// 글 저장자 저장
 			data.writer = $('#writer').val();
-
-			console.log(data);
+			data.count = 0;
 
 			// 아티클 모델에 데이터를 삽입함.
 			articleModel.create(data, function(result) {
@@ -93,6 +117,7 @@ CommunityExample.LoginExample = CLASS({
 	},
 
 	init : function(cls, inner, self, params) {'use strict';
+
 		var
 		// user model
 		userModel = LoginExample.UserModel();
@@ -125,6 +150,7 @@ CommunityExample.LoginExample = CLASS({
 		});
 		// join submit
 
+		// 로그인
 		$('#login').submit(function() {
 
 			var
@@ -136,8 +162,13 @@ CommunityExample.LoginExample = CLASS({
 			});
 
 			userModel.login(data, function(result) {
+				console.log(data);
 
 				if (result.hasError === false) {
+					self.apply(function() {
+						self.signedUserData = data.username;
+					});
+					console.log(self);
 					alert('Success!');
 				} else {
 					alert(JSON.stringify(result.errors));
@@ -148,6 +179,14 @@ CommunityExample.LoginExample = CLASS({
 			return false;
 		});
 		// login submit
+
+		// 로그아웃
+		$('#logout').submit(function() {
+			self.apply(function() {
+				console.log(self.signedUserData);
+				self.signedUserData = null;
+			});
+		});
 	}
 });
 

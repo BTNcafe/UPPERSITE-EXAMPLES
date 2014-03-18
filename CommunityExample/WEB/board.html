@@ -15,9 +15,9 @@
 				<th>조회수 </th>
 			</thead>
 			<tbody>
-				<tr ng-repeat="content in articleModel" ng-click="logPosition(item, $event)">
+				<tr ng-repeat="content in articleModel">
 					<td>{{content.id}}</td>
-					<td >{{content.title}}</td>
+					<td><a ng-click="showContents(content, $event)">{{content.title}}</a></td>
 					<td>{{content.writer}}</td>
 					<td>{{content.date}}</td>
 					<td>{{content.count}}</td>
@@ -66,7 +66,7 @@
 </div><!-- /.modal -->
 
 <!-- 내용보기 모달  -->
-<div class="modal fade" id="showContents">
+<div class="modal fade" id="showContent">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -83,11 +83,11 @@
 					</div>
 					<div class="input-group">
 						<span class="input-group-addon">제&nbsp;&nbsp;&nbsp;&nbsp;목</span>
-						<input type="text" class="form-control" placeholder="제목을 넣어주세요." name="title">
+						<input type="text" class="form-control" placeholder="제목을 넣어주세요." name="title" ng-model="title">
 					</div>
 					<div class="input-group">
 						<span class="input-group-addon">내&nbsp;&nbsp;&nbsp;&nbsp;용 </span>
-						<textarea class="form-control" rows="12" placeholder="내용을 입력해주세요." name="content"></textarea>
+						<textarea class="form-control" rows="12" placeholder="내용을 입력해주세요." name="content" ng-model="content">{{content}}</textarea>
 					</div>
 			</div>
 			<div class="modal-footer">
@@ -95,7 +95,7 @@
 					닫기
 				</button>
 				<button id="saveArticle" type="submit" class="btn btn-primary">
-					저장하기
+					수정하기
 				</button>
 				</form>
 			</div>

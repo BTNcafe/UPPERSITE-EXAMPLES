@@ -50,7 +50,8 @@
 					<a href="#/board">Community</a>
 				</li>
 				<li>
-					<a href="#/login">Login</a>
+					<a ng-show="!signedUserData" href="#/login">Login</a>
+					<a ng-show="signedUserdata" href="#/login">Logout</a>
 				</li>
 			</ol>
 		</center>
