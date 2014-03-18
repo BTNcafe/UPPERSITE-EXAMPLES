@@ -41,6 +41,12 @@ CommunityExample.BoardExample = CLASS({
 				self.apply(function() {
 					self.articleModel = articleModelArray;
 				});
+
+				updateHandler(data.id, function(savedData) {
+					self.apply(function() {
+						self.articleModel = articleModelArray;
+					});
+				});
 			}
 		});
 
@@ -69,7 +75,9 @@ CommunityExample.BoardExample = CLASS({
 				if (result.hasError === false) {
 					alert('Success.');
 					// 모달 창 닫기
-
+					self.apply(function() {
+						self.articleModel = articleModelArray;
+					});
 				} else {
 					alert(JSON.stringify(result.errors));
 				}
