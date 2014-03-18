@@ -1,0 +1,66 @@
+<div class="container">
+	<div class="row">
+		<h2 class="pull-left">커뮤니티 게시판 </h2>
+		<button id="writeArticle" type="button" class="btn btn-primary pull-right">
+			새글 작성
+		</button>
+	</div>
+	<div class="row">
+		<table class="table table-striped">
+			<thead>
+				<th>글번호 </th>
+				<th>제목 </th>
+				<th>아이디 </th>
+				<th>작성일자 </th>
+				<th>조회수 </th>
+			</thead>
+			<tbody>
+				<tr ng-repeat="content in articleModel">
+					<td>{{content.id}}</td>
+					<td>{{content.title}}</td>
+					<td>{{content.writer}}</td>
+					<td>{{content.date}}</td>
+					<td>{{content.count}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<!-- 새글작성 모달  -->
+<div class="modal fade" id="newArticle">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title">새글 저장 </h4>
+			</div>
+			<div class="modal-body">
+				<form id="formNewArticle">
+					<div class="input-group">
+						<span class="input-group-addon">아이디 </span>
+						<input id="writer" type="text" class="form-control" name="writer" value="tester" disabled>
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">제&nbsp;&nbsp;&nbsp;&nbsp;목</span>
+						<input type="text" class="form-control" placeholder="제목을 넣어주세요." name="title">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">내&nbsp;&nbsp;&nbsp;&nbsp;용 </span>
+						<textarea class="form-control" rows="12" placeholder="내용을 입력해주세요." name="content"></textarea>
+					</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">
+					닫기
+				</button>
+				<button id="saveArticle" type="submit" class="btn btn-primary">
+					저장하기
+				</button>
+				</form>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

@@ -1,0 +1,79 @@
+<h1>UPPERSITE CRUD Example</h1>
+<!-- 아티클 추가 폼  -->
+<form>
+	<h3>Article Form</h3>
+	<p>
+		<input name="title" placeholder="Article Title.">
+	</p>
+	<p>
+		<textarea name="content" placeholder="Article Content."></textarea>
+	</p>
+	<p>
+		<input type="submit">
+	</p>
+</form>
+
+<!-- 수정 모달(bootstrap) -->
+<div class="modal fade" id="modifyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">아티클 수정</h4>
+			</div>
+			<div class="modal-body">
+				<ul id="contents"></ul>
+			</div>
+			<div class="modal-footer">
+				<button id="contentUpdate" type="button" class="btn btn-primary" data-dismiss="modal">
+					수정
+				</button>
+				<button id="close" type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:modifyModalClose();">
+					닫기
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 댓글 모달(bootstrap) -->
+<div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">댓글 보기</h4>
+			</div>
+			<div class="modal-body">
+				<ul id="commentContents"></ul>
+			</div>
+			<div class="modal-footer">
+				<button id="close" type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:commentModalClose();">
+					닫기
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 게시판 본문 내용(bootstrop) -->
+<table class='table table-striped'>
+	<thead>
+		<th>제목</th>
+		<th>내용</th>
+		<th>작성일자</th>
+		<th>수정</th>
+		<th>삭제</th>
+		<th>댓글내용</th>
+		<th>댓글</th>
+		<th>댓글보기</th>
+	</thead>
+	<tbody>
+
+	</tbody>
+</table>
+

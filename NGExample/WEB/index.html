@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html ng-app="NGExample">
+	<head>
+		<meta charset="utf-8">
+
+		<title>AngularJS(NG) Test</title>
+
+		<script src="/__SCRIPT"></script>
+		<!-- 제이 쿼리 CDN 로딩 -->
+		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+		<!-- 부트스트랩 CDN 로딩 -->
+		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+		<!-- 부트스트랩 CDN 로딩 -->
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+		<!-- 부트스트랩 선택적 테마 CDN 로딩 -->
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+		<script src="crudexample.js"></script>
+		<script>
+			NG.INIT(NGExample, function(INSERT_CTRL, MATCH_VIEW) {
+
+				MATCH_VIEW({
+					uris : ['CRUD'],
+					page : 'crudexample.html',
+					target : NGExample.CRUDExample
+				});
+
+				MATCH_VIEW({
+					uris : ['login'],
+					page : 'login.html'
+				});
+
+			});
+		</script>
+
+	</head>
+
+	<body>
+		<center>
+			<ol class="breadcrumb">
+				<li>
+					<a href="#">Home</a>
+				</li>
+				<li>
+					<a href="#/CRUD">CRUD 예제 </a>
+				</li>
+				<li class="active">
+					로그인 예제
+				</li>
+			</ol>
+		</center>
+		<div ng-view></div>
+	</body>
+</html>

@@ -19,19 +19,24 @@
 			</p>
 		</form>
 
-		<!-- Modal -->
-		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<!-- 수정 모달(bootstrap) -->
+		<div class="modal fade" id="modifyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
 							&times;
 						</button>
-						<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+						<h4 class="modal-title" id="myModalLabel">아티클 수정</h4>
 					</div>
-					<div class="modal-body"></div>
+					<div class="modal-body">
+						<ul id="contents"></ul>
+					</div>
 					<div class="modal-footer">
-						<button id="close" type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:close();">
+						<button id="contentUpdate" type="button" class="btn btn-primary" data-dismiss="modal">
+							수정
+						</button>
+						<button id="close" type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:modifyModalClose();">
 							닫기
 						</button>
 					</div>
@@ -39,7 +44,30 @@
 			</div>
 		</div>
 
-		<table border='0px' class='table table-striped'>
+		<!-- 댓글 모달(bootstrap) -->
+		<div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							&times;
+						</button>
+						<h4 class="modal-title" id="myModalLabel">댓글 보기</h4>
+					</div>
+					<div class="modal-body">
+						<ul id="commentContents"></ul>
+					</div>
+					<div class="modal-footer">
+						<button id="close" type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:commentModalClose();">
+							닫기
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 게시판 본문 내용(bootstrop) -->
+		<table class='table table-striped'>
 			<thead>
 				<th>제목</th>
 				<th>내용</th>
@@ -54,79 +82,90 @@
 
 			</tbody>
 		</table>
+		<!-- Uppersite 사용을 위한 스크립트 로딩 -->
 		<script src="/__SCRIPT"></script>
+		<!-- 제이 쿼리 CDN 로딩 -->
 		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-		<!-- Latest compiled and minified CSS -->
+		<!-- 부트스트랩 CDN 로딩 -->
+		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+		<!-- 부트스트랩 CDN 로딩 -->
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-
-		<!-- Optional theme -->
+		<!-- 부트스트랩 선택적 테마 CDN 로딩 -->
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
 
-		<!-- Latest compiled and minified JavaScript -->
-		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 		<script>
 			var
-			//close
-			close = function() {
-				alert('close');
+			// 페이지에서 사용할 아티클 모델 선언
+			articleModel = CRUDExample.ArticleModel();
+			var
+			// 페이지에서 사용할 댓글 모델 선언
+			commentModel = CRUDExample.CommentModel();
+			var
+			// 댓글 모달을 닫을 경우 실행할 함수
+			commentModalClose = function() {
+				$('#commentContents').html('');
 			};
 			var
-			// article model
-			articleModel = CRUDExample.ArticleModel();
-
-			var
-			// comment model
-			commentModel = CRUDExample.CommentModel();
-
-			articleModel.findDataSet({
+			// 수정 모달을 닫을 경우 실행할 함수
+			modifyModalClose = function() {
+				$('#contents').html('');
+			};
+			// 아티클 모델에서 데이터를 읽어들이고 감시함
+			articleModel.findDataSetWatching({
 				sort : {
 					createTime : -1
 				}
-			}, function(result) {
+			}, function(result, updateHandler, removeHandler, closeWatching) {
 
-				if (result.hasError === false) {
+				if (result.hasError === false) {// 모델에서 데이터를 얻는 과정에서 발생하는 에러 체크
 
 					EACH(result.savedDataSet, function(data) {
 
 						var
-						// cal
+						// 모델에서 뷸러들인 시간데이터를 달력형식에 맞게 변환
 						cal = CALENDAR(data.createTime);
-
+						// 테이블에 모델에서 가져온 데이터를 채워넣음.
 						$('tbody').append('<tr id=' + data.id + '>');
 						$('#' + data.id).append('<td class=title>' + data.title + '</td>');
 						$('#' + data.id).append('<td class=content>' + data.content + '</td>');
 						$('#' + data.id).append('<td class=time>' + cal.getYear() + '년 ' + cal.getMonth() + '월 ' + cal.getDate() + '일 ' + '</td>');
-						$('#' + data.id).append('<td class=modify><button class="btn btn-primary btn-small" type=submit onClick="javascript:modifyContents()">수정 </button></td>');
-						$('#' + data.id).append('<td class=delete><button class="btn btn-primary btn-small" type=submit onClick="javascript:deleteContents()">삭제 </button></td>');
+						$('#' + data.id).append('<td class=modify><button class="btn btn-primary btn-small" data-toggle="modal" data-target="#modifyModal" type=submit>수정 </button></td>');
+						$('#' + data.id + '> .modify > button').bind("click", function() {
+							modifyContents(data);
+							// 컨텐츠 수정버튼을 클릭할 경우 데이터 아이디를 모달에 넘겨줌.
+							$('#contentUpdate').bind("click", function() {
+								contentsUpdate(data.id);
+							});
+						});
+						$('#' + data.id).append('<td class=delete><button class="btn btn-primary btn-small" type=submit onClick="javascript:deleteContents(\'' + data.id + '\')">삭제 </button></td>');
 						$('#' + data.id).append('<td class=comment_contents> <input type=text id=' + data.id + 'comment /></td>');
 						$('#' + data.id).append('<td class=comment><button class="btn btn-primary btn-small" type=submit onClick="javascript:addComment(\'' + data.id + '\')">댓글달기</button></td>');
-						$('#' + data.id).append('<td class=comment_view> <button class="btn btn-primary btn-small" data-toggle="modal" data-target="#myModal" value="댓글보기" onClick="javascript:commentView(\'' + data.id + '\');">댓글보기</button</td></tr>');
+						$('#' + data.id).append('<td class=comment_view> <button class="btn btn-primary btn-small" data-toggle="modal" data-target="#commentModal" value="댓글보기" onClick="javascript:commentView(\'' + data.id + '\');">댓글보기</button</td></tr>');
+
+						updateHandler(data.id, function(savedData) {
+							$('#' + data.id + ' .title').text(savedData.title);
+						});
 					});
 				}
 			});
 
 			var
-			//
+			// 댓글을 추가 할 때 실행되는 함수
 			addComment = function(id) {
 				var
-				// data
+				// 댓글 아티클에 들어갈 데이터 모델 정의.
 				data = {};
-				var
-				//comment
-				comment = $('#' + id + 'comment').val();
-
+				data.content = $('#' + id + 'comment').val();
 				data.articleId = id;
-				data.content = comment;
-
+				// 댓글 모델 안에 데이터를 삽입함.
 				commentModel.create(data, function(result) {
-
+					// 삽입한 결과가 성공적인지 체크.
 					if (result.hasError === false) {
 						alert('Success.');
 					} else {
 						alert(JSON.stringify(result.errors));
 					}
 				});
-
 				return false;
 			};
 
@@ -136,20 +175,23 @@
 				// cal
 				cal = CALENDAR(savedData.createTime);
 
-				$('tbody').before('<tr id=' + savedData.id + '>');
+				$('tbody > tr:first').before('<tr id=' + savedData.id + '>');
 				$('#' + savedData.id).append('<td class=title>' + savedData.title + '</td>');
 				$('#' + savedData.id).append('<td class=content>' + savedData.content + '</td>');
-				$('#' + savedData.id).append('<td class=time>' + cal.getYear() + '년 ' + cal.getMonth() + '월 ' + cal.getDate() + '일' + '</td>');
-				$('#' + savedData.id).append('<td class=modify><button class="btn btn-primary btn-small type=submit onClick="javascript:modifyContents()"/>수정</td>');
-				$('#' + savedData.id).append('<td class=comment><button class="btn btn-primary btn-small type=submit onClick="javascript:addComment(\'' + savedData.id + '\')"/>댓글달기</td>');
-				$('#' + savedData.id).append('<td class=comment_contents> <button class="btn btn-primary btn-small" type=text id=' + savedData.id + 'comment ></button></td>');
-				$('#' + savedData.id).append('<td class=comment_view> <button class="btn btn-primary btn-small" data-toggle="modal" data-target="#myModal" value="댓글보기" onClick="javascript:commentView(\'' + savedData.id + '\');">댓글보기</button></td></tr>');
+				$('#' + savedData.id).append('<td class=time>' + cal.getYear() + '년 ' + cal.getMonth() + '월 ' + cal.getDate() + '일 ' + '</td>');
+				$('#' + savedData.id).append('<td class=modify><button class="btn btn-primary btn-small" data-toggle="modal" data-target="#modifyModal" type=submit onClick="javascript:modifyContents()">수정 </button></td>');
+				$('#' + savedData.id).append('<td class=delete><button class="btn btn-primary btn-small" type=submit onClick="javascript:deleteContents()">삭제 </button></td>');
+				$('#' + savedData.id).append('<td class=comment_contents> <input type=text id=' + savedData.id + 'comment /></td>');
+				$('#' + savedData.id).append('<td class=comment><button class="btn btn-primary btn-small" type=submit onClick="javascript:addComment(\'' + savedData.id + '\')">댓글달기</button></td>');
+				$('#' + savedData.id).append('<td class=comment_view> <button class="btn btn-primary btn-small" data-toggle="modal" data-target="#myModal" value="댓글보기" onClick="javascript:commentView(\'' + savedData.id + '\');">댓글보기</button</td></tr>');
 			});
+			// onNew function
 
 			var
-			//commentView
+			// 댓글 보기 버튼을 눌렀을 경우 실행할 함수 정의.
 			commentView = function(id) {
 				commentModel.findDataSet({
+					// 해당 댓글은 아티클 모델에 맞게 아이디를 필터링 해줌.
 					filter : {
 						articleId : id
 					},
@@ -157,29 +199,33 @@
 						createdTime : -1
 					}
 				}, function(result) {
+					// 아티클 에서 데이터 찾기의 오류를 체
 					if (result.hasError === false) {
 						var
-						//commentContens
+						// 댓글의 내용을 담을 변수 선언.
 						commentContents;
 						EACH(result.savedDataSet, function(data) {
-							commentContents += JSON.stringify(data);
+							var
+							// 모델에서 받아온 시간 정보를 년월일에 맞게 바꿔줄 클래스 초기화.
+							cal = CALENDAR(data.createTime);
+							// 댓글 모달안에 각 데이터를 채워넣음.
+							$('#commentContents').append('<li>작성내용 : ' + data.content + ' // 작성일자 : ' + cal.getMonth() + '월 ' + cal.getDate() + '일 ' + cal.getHour() + '시' + '</li>');
 						});
-						$('.modal-body').html(commentContents);
-
 					}
 				});
 			};
 
+			// 새로운 게시물을 작성할 경우 실행되는 함수.
 			$('form').submit(function() {
 
 				var
-				// data
+				// 아티클 모델에 들어갈 데이터를 선언.
 				data = {};
 
 				$.each($(this).serializeArray(), function(i, o) {
 					data[o.name] = o.value;
 				});
-
+				// 아티클 모델에 데이터를 삽입함.
 				articleModel.create(data, function(result) {
 
 					if (result.hasError === false) {
@@ -191,6 +237,47 @@
 
 				return false;
 			});
+
+			var
+			// 게시판에서 수정 버튼을 클릭 했을 경우 모달 폼을 채워줌.
+			modifyContents = function(data) {
+				$('#contents').append('<li>제목 : <input id=titleUpdate type=text value=' + data.title + '></li>');
+				$('#contents').append('<li>내용 : <input id=contentsUpdate type=text value=' + data.content + '></li>');
+			};
+
+			var
+			// 게시판에서 글을 삭제하기 위해서 실행되는 함수.
+			deleteContents = function(id) {
+				console.log('delete contents : ' + id);
+				// 아티클 모델에서 특정 id를 삭제함.
+				articleModel.remove(id, function(result) {
+					// 모델이 수행한 결과가 에러인지 체크.
+					if (result.hasError === false) {
+						// 성공할 경우 전체게시글에서 제거.
+						$("#" + id).remove();
+					} else {
+						// 실패할 경우 콘솔에 에러 메시지를 출력.
+						console.log(result.errorMsg);
+					}
+				});
+			};
+
+			var
+			// 수정모달 폼에서 동작할 행위들을 정의함.
+			contentsUpdate = function(id) {
+				var
+				// 아티클 모델에 업데이트 될 데이터 정의.
+				data = {
+					id : id
+				};
+				data.title = $('#titleUpdate').val();
+				data.content = $('#contentsUpdate').val();
+				console.log('contents Update : ' + data.title + '//' + data.content);
+				// 아티클 모델에 입력된 데이터로 수정을 가함.
+				articleModel.update(data, function(result) {
+					console.log(result);
+				});
+			};
 		</script>
 	</body>
 </html>
