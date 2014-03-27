@@ -47,6 +47,17 @@
 			}, function(result) {
 				console.log(result);
 			});
+			
+			DataTransferExample.GET_JSON({
+				uri : 'rest/1',
+				data : {
+					a : 1,
+					b : 2,
+					c : 3
+				}
+			}, function(result) {
+				console.log(result);
+			});
 
 			DataTransferExample.POST({
 				uri : 'test',
@@ -79,6 +90,17 @@
 			
 			DataTransferExample.POST_JSON({
 				uri : 'json',
+				data : {
+					a : 1,
+					b : 2,
+					c : 3
+				}
+			}, function(result) {
+				console.log(result);
+			});
+			
+			DataTransferExample.POST_JSON({
+				uri : 'rest/2',
 				data : {
 					a : 1,
 					b : 2,

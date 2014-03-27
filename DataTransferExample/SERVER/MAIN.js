@@ -22,5 +22,18 @@ DataTransferExample.MAIN = METHOD({
 				encoding : 'utf-8'
 			});
 		});
+		
+		DataTransferExample.REQUEST_JSON('rest/{id}', function(data, params, ip, headers, response, serveErrorPage) {
+			console.log(data);
+			console.log(params);
+
+			response({
+				content : JSON.stringify({
+					msg : 'test!'
+				}),
+				contentType : 'application/json',
+				encoding : 'utf-8'
+			});
+		});
 	}
 });
