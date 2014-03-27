@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>예제 문서</title>
+	</head>
+	<body>
+		<h1>UPPERSITE Data Transfer Example</h1>
+		<script src="/__SCRIPT"></script>
+		<script>
+			DataTransferExample.GET({
+				uri : 'test',
+				paramStr : 'a=1;b=2;c=3'
+			}, function(result) {
+				console.log(result);
+			});
+
+			DataTransferExample.GET({
+				uri : 'test',
+				data : {
+					a : 1,
+					b : 2,
+					c : 3
+				}
+			}, function(result) {
+				console.log(result);
+			});
+
+			DataTransferExample.GET({
+				uri : 'json',
+				data : {
+					a : 1,
+					b : 2,
+					c : 3
+				}
+			}, function(result) {
+				console.log(result);
+			});
+			
+			DataTransferExample.GET_JSON({
+				uri : 'json',
+				data : {
+					a : 1,
+					b : 2,
+					c : 3
+				}
+			}, function(result) {
+				console.log(result);
+			});
+
+			DataTransferExample.POST({
+				uri : 'test',
+				paramStr : 'a=1;b=2;c=3'
+			}, function(result) {
+				console.log(result);
+			});
+
+			DataTransferExample.POST({
+				uri : 'test',
+				data : {
+					a : 1,
+					b : 2,
+					c : 3
+				}
+			}, function(result) {
+				console.log(result);
+			});
+
+			DataTransferExample.POST({
+				uri : 'json',
+				data : {
+					a : 1,
+					b : 2,
+					c : 3
+				}
+			}, function(result) {
+				console.log(result);
+			});
+			
+			DataTransferExample.POST_JSON({
+				uri : 'json',
+				data : {
+					a : 1,
+					b : 2,
+					c : 3
+				}
+			}, function(result) {
+				console.log(result);
+			});
+		</script>
+	</body>
+</html>
