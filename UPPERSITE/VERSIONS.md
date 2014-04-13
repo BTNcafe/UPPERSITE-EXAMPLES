@@ -26,3 +26,16 @@ VERSIONS
 
 1.2.9 (2014. 3. 2)
 - BTNcafe에서 UPPERCASE를 fork 하여 웹 사이트 개발 전용으로 발전시킨 UPPERSITE를 외부에 공개
+
+ROAD MAP
+--------
+1.3 (2014년 전반기 예상)
+- LOOP를 다시 COMMON으로 회귀, 성능 개선
+- COMMON/INTEGER, COMMON/REAL 추가
+- REQUEST의 callback에 넘어가는 파라미터가 method, params, paramStr, headers, response로, REQUEST_JSON의 callback에 넘어가는 파라미터가 method, params, data, headers, response로 변경
+- PUT, PUT_JSON, DELETE, DELETE_JSON이 추가
+- UPPERSITE 부팅 후 명령어를 입력받을 수 있게 REPL(Read-Eval-Print-Loop)기능 추가(SERVER_CONFIG.isNotUsingREPL을 true로 두어 끌 수 있음)
+- BOX 이름에 점(.)이 들어가도 인식되도록 개선
+- REFRESH 기능 추가
+- 실시간 처리 Redis 연동
+- 멀티코어 CPU 지원으로 인한 성능 개선

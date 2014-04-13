@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>UPPERSITE</title>
+	</head>
+	<body>
+		<p>
+			UPPERSITE Upload Example
+		</p>
+		<iframe id="upload-frame" style="display: none;" name="__UPLOAD_FORM"></iframe>
+		<form id="upload-form" action="/UploadExample/__UPLOAD" target="__UPLOAD_FORM" method="POST" enctype="multipart/form-data">
+			<div id="upload-preview"></div>
+			<input id="input-file" name="file" type="file">
+		</form>
+		<script src="/__SCRIPT"></script>
+		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script>
+			$('#input-file').change(function() {
+				$('#upload-form').submit();
+			});
+
+			$('#upload-frame').load(function() {
+
+				var
+				// frame
+				frame = global['__UPLOAD_FORM'],
+
+				// file data set
+				fileDataSet = frame !== undefined ? UNPACK_DATA(frame.fileDataSet) : undefined;
+
+				if (fileDataSet !== undefined) {
+
+					fileData = fileDataSet[0];
+
+					$('#upload-preview').empty();
+					$('#upload-preview').append('<img class="img-thumbnail" src="/UploadExample/__UPLOAD/' + fileData.id + '" style="max-width: 100%; margin-bottom: 10px;">');
+
+					$('#input-file').val('');
+				}
+			});
+		</script>
+	</body>
+</html>
