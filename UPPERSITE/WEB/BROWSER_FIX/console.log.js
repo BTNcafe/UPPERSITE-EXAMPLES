@@ -1,0 +1,1 @@
+global.console=console=OBJECT({init:function(n,o,t){"use strict";var i;t.log=i=function(){var n,o=arguments;CONFIG.isDevMode===!0&&(n="",EACH(o,function(t,i){n+=JSON.stringify(t),i<o.length-1&&(n+=", ")}),alert(n))}}});

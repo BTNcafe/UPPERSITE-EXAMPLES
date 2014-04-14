@@ -2,7 +2,7 @@ DataTransferExample.MAIN = METHOD({
 
 	run : function(m, params) {'use strict';
 
-		DataTransferExample.REQUEST('test', function(paramStr, params, ip, headers, response, serveErrorPage) {
+		DataTransferExample.REQUEST('test', function(method, params, paramStr, headers, response, serveErrorPage) {
 			console.log(paramStr);
 
 			response({
@@ -11,7 +11,7 @@ DataTransferExample.MAIN = METHOD({
 			});
 		});
 
-		DataTransferExample.REQUEST_JSON('json', function(data, params, ip, headers, response, serveErrorPage) {
+		DataTransferExample.REQUEST_JSON('json', function(method, params, data, headers, response, serveErrorPage) {
 			console.log(data);
 
 			response({
@@ -22,10 +22,10 @@ DataTransferExample.MAIN = METHOD({
 				encoding : 'utf-8'
 			});
 		});
-		
-		DataTransferExample.REQUEST_JSON('rest/{id}', function(data, params, ip, headers, response, serveErrorPage) {
-			console.log(data);
+
+		DataTransferExample.REQUEST_JSON('rest/{id}', function(method, params, data, headers, response, serveErrorPage) {
 			console.log(params);
+			console.log(data);
 
 			response({
 				content : JSON.stringify({

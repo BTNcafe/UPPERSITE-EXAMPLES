@@ -1,0 +1,1 @@
+RUN(function(){"use strict";OBJECT.init()});
