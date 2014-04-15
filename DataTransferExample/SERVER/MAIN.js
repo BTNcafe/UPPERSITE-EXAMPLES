@@ -3,7 +3,7 @@ DataTransferExample.MAIN = METHOD({
 	run : function(m, params) {'use strict';
 
 		DataTransferExample.REQUEST('test', function(method, params, paramStr, headers, response, serveErrorPage) {
-			console.log('test', method, paramStr);
+			console.log('test', method, typeof paramStr);
 
 			response({
 				content : 'ok!',
