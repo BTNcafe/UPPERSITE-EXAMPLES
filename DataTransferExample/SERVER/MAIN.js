@@ -3,7 +3,7 @@ DataTransferExample.MAIN = METHOD({
 	run : function(m, params) {'use strict';
 
 		DataTransferExample.REQUEST('test', function(method, params, paramStr, headers, response, serveErrorPage) {
-			console.log(paramStr);
+			console.log('test', method, paramStr);
 
 			response({
 				content : 'ok!',
@@ -12,7 +12,7 @@ DataTransferExample.MAIN = METHOD({
 		});
 
 		DataTransferExample.REQUEST_JSON('json', function(method, params, data, headers, response, serveErrorPage) {
-			console.log(data);
+			console.log('json', method, data);
 
 			response({
 				content : JSON.stringify({
@@ -24,8 +24,8 @@ DataTransferExample.MAIN = METHOD({
 		});
 
 		DataTransferExample.REQUEST_JSON('rest/{id}', function(method, params, data, headers, response, serveErrorPage) {
-			console.log(params);
-			console.log(data);
+			console.log('rest/{id}', method, params);
+			console.log('rest/{id}', method, data);
 
 			response({
 				content : JSON.stringify({
