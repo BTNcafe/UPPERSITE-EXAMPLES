@@ -229,6 +229,11 @@
 				articleModel.create(data, function(result) {
 
 					if (result.hasError === false) {
+
+						articleModel.countDataSet(function(result) {
+							console.log(result);
+						});
+
 						alert('Success.');
 					} else {
 						alert(JSON.stringify(result.errors));
