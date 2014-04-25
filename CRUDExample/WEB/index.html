@@ -230,8 +230,16 @@
 
 					if (result.hasError === false) {
 
+						// count all articles.
 						articleModel.countDataSet(function(result) {
-							console.log(result);
+							console.log(result.count);
+						});
+
+						// count 'test' articles.
+						articleModel.countDataSet({
+							title : 'test'
+						}, function(result) {
+							console.log(result.count);
 						});
 
 						alert('Success.');

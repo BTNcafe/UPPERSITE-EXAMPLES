@@ -1,6 +1,6 @@
 VERSIONS
 ========
-1.3.2 (2014. 4. 25)
+1.3.2.1 (2014. 4. 25)
 - UPPERCASE.JS (https://bitbucket.org/uppercaseio/uppercase.js) 포함
 - countDataSet 버그 개선
 
