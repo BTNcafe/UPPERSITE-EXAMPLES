@@ -1,8 +1,9 @@
 VERSIONS
 ========
-1.3.2.1 (2014. 4. 25)
+1.3.2.2 (2014. 4. 26)
 - UPPERCASE.JS (https://bitbucket.org/uppercaseio/uppercase.js) 포함
 - countDataSet 버그 개선
+- findDataWatching 버그 개선
 
 1.3.1 (2014. 4. 20)
 - 안드로이드 4.4 미만 버젼의 기본 웹 브라우저에서 통신 연결 오류 해결
