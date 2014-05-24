@@ -1,1 +1,0 @@
-RUN(function(){"use strict";var n=function(n){document.write('<script src="/UPPERSITE/BROWSER_FIX/ANDROID/'+n+'.js"></script>')};global.ANDROID={},/Android\s([0-9\.]*)/.exec(navigator.userAgent),ANDROID.version=REAL(RegExp.$1),ANDROID.version<4.4&&(CONFIG.transports=["xhr-polling","jsonp-polling"]),n("INFO")});

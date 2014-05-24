@@ -1,1 +1,0 @@
-RUN(function(){"use strict";OBJECT.init(),TIME_SYNC()});
