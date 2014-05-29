@@ -27,13 +27,18 @@
 
 			articleModel.findDataWatching({}, function(result, updateHandler) {
 
-				updateHandler(function(result) {
-					console.log(result);
-				});
-				
-				result.savedData.title = 'TTT';
-				
-				articleModel.update(result.savedData);
+				if (result.savedData !== undefined) {
+
+					updateHandler(function(result) {
+						console.log(result);
+					});
+
+					result.savedData.title = 'TTT';
+
+					DELAY(1, function() {
+						articleModel.update(result.savedData);
+					});
+				}
 			});
 
 			$('form').submit(function() {
